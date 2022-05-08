@@ -14,11 +14,10 @@
         }
         
         body {
-            display: grid;
-            place-content: center;
             background: url(bg.jpeg);
             background-size: cover;
             min-height: 100vh;
+            padding: 2rem 0;
         }
         
         .logo {
@@ -33,9 +32,21 @@
             width: 100%;
         }
         
-        input {
+        .input,
+        p {
+            margin: auto;
+        }
+        
+        .input {
             width: 90vw;
             max-width: 50rem;
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        input {
+            width: 70%;
             height: 2.5rem;
             line-height: 1.5rem;
             font-size: 1rem;
@@ -50,7 +61,7 @@
         }
         
         button {
-            width: fit-content;
+            width: 28%;
             margin: auto;
             font-size: 1.5rem;
             line-height: 2rem;
@@ -59,7 +70,6 @@
             border-radius: 1rem;
             border: none;
             cursor: pointer;
-            text-transform: uppercase;
             background-color: rgb(238, 52, 60);
             color: white;
             font-weight: 700;
@@ -90,9 +100,15 @@
     <div class="logo">
         <img src="logo1.gif">
     </div>
-    <input id="txt" type="text" placeholder="Унших боломжгүй текст оруулана уу...">
-    <button id="btn">хөрвүүлэх</button>
+    <div class="input">
+        <input id="txt" type="text" placeholder="UTF-8 текст оруулана уу...">
+        <button id="btn">to MN</button>
+    </div>
     <p id="convertedTxt"></p>
+    <div class="input">
+        <input id="txt1" type="text" placeholder="ISO-8859-1 текст оруулана уу...">
+        <button id="btn1">to UTF-8</button>
+    </div>
     <script>
         btn.addEventListener('click', event => {
             let unknownTxt = txt.value;
@@ -111,6 +127,24 @@
         })
         txt.addEventListener('keydown', event => {
             if (event.key == 'Enter') btn.click();
+        })
+        btn1.addEventListener('click', event => {
+            let unknownTxt = txt1.value;
+            fetch('char.json')
+                .then(res => res.json())
+                .then(data => {
+                    for (let i = 0; i < unknownTxt.length; i++) {
+                        data.forEach(arr => {
+                            if (unknownTxt.indexOf(arr[1]) != -1) {
+                                return unknownTxt = unknownTxt.replace(arr[1], arr[0]);
+                            };
+                        });
+                    };
+                    convertedTxt.textContent = unknownTxt;
+                });
+        })
+        txt1.addEventListener('keydown', event => {
+            if (event.key == 'Enter') btn1.click();
         })
     </script>
 </body>
